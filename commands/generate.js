@@ -3,59 +3,51 @@
 const fs = require('fs');
 const { resolve } = require('path');
 const path = require('path');
+const markdown = require('markdown').markdown;
 const helpers = require('./helpers');
 
-const subjectsDir = path.resolve(__dirname, '../subjects');
-const templatesDir = path.resolve(__dirname, '../templates');
+const rootDir = path.resolve(__dirname, '..');
+const subjectsDir = path.resolve(rootDir, 'subjects');
+const templatesDir = path.resolve(rootDir, 'templates');
 const indexTemplatePath = path.resolve(templatesDir, 'index.html');
-const outIndexPath = path.resolve(__dirname, '../index.html');
+const indexPath = path.resolve(rootDir, 'index.html');
 const subjectManifestPath = path.resolve(subjectsDir, 'index.md');
+const tmpindex = path.resolve(rootDir, 'tmpindex.html');
+
+console.log('starting...');
+
+console.log('init tmpindex.html from template');
+if(fs.existsSync(tmpindex)) {
+	fs.unlinkSync(tmpindex);
+}
+fs.copyFileSync(indexTemplatePath, tmpindex);
+
+console.log('get lines from index.html and manifest');
+var index_lines = helpers.get_lines(tmpindex);
+var manifest_lines = helpers.get_lines(subjectManifestPath);
+
+console.log('replace outline');
+var tmp_lines = manifest_lines.map(l => l.substring(0,l.length-3)); // remove '.md'
+helpers.replace(index_lines, 'outline', tmp_lines);
+
+console.log('replace subjects');
+tmp_lines = [];
+for(let subject of manifest_lines) {
+	let file = path.resolve(subjectsDir, subject)
+	let lines = helpers.get_lines(file);
+	lines = lines.map(l => markdown.toHTML(l));
+	tmp_lines.splice(tmp_lines.length, 0, ...lines);
+}
+helpers.replace(index_lines, 'subjects', tmp_lines);
 
 
-helpers.read_lines(indexTemplatePath, (lines) => {
-    console.log('deleting index.html');
-    fs.unlinkSync(outIndexPath);
+console.log('write tmpindex.html file');
+fs.writeFileSync(tmpindex, index_lines.join('\n'), {'flag': 'w'});
 
-    console.log('append head of index.html');
-    for(var i=0; i<lines.length; i++) {
-        fs.appendFileSync(outIndexPath, lines[i]+'\n', {'flag': 'a+'});
-        if(lines[i].trim() == "<body>") {
-            break;
-        }
-    }
+console.log('rename tmpindex.html to index.html');
+if(fs.existsSync(indexPath)) {
+	fs.unlinkSync(indexPath);
+}
+fs.renameSync(tmpindex, indexPath);
 
-    console.log('read subjects file.');
-    let promise = new Promise((resolve, reject) => {
-        helpers.read_lines(subjectManifestPath, (subjects) => {
-            for(var i=0; i<subjects.length; i++) {
-                try {
-                let text = fs.readFileSync(path.resolve(subjectsDir, subjects[i]));
-                fs.appendFileSync(outIndexPath, text.toString()+'\n', {'flag': 'a+'});
-                } catch {
-                    console.log(`${subjects[i]} is not existing.`);
-                }
-            }
-            resolve();
-        });
-    });
-    
-
-    promise.then(() => {
-        console.log('append trail of index.html');
-        for(; i<lines.length; i++) {
-            fs.appendFileSync(outIndexPath, lines[i]+'\n', {'flag': 'a+'});
-        }
-    });
-    
-    
-});
-
-/*
-fs.readFile('/Users/joe/test.txt', 'utf8' , (err, data) => {
-    if (err) {
-      console.error(err)
-      return
-    }
-    console.log(data)
-  })
-  */
+console.log('done!');

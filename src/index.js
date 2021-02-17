@@ -2,6 +2,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+
+class Subject extends React.Componet {
+	constructor(props) {
+		super(props);
+
+	}
+}
+
 class Toggle extends React.Component {
     constructor(props) {
         super(props);
@@ -28,7 +36,7 @@ class Toggle extends React.Component {
 
 /*
 ReactDOM.render(
-    <Toggle />,
+    <Toggle />, 
     document.body
 );
 */
