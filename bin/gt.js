@@ -11,10 +11,12 @@ const index_tmp = path.resolve(basedir, 'dist', 'index_tmp.html');
 let data = {};
 let langs = fs.readdirSync(langdir);
 langs.forEach(l => {
-  let name = l.replace(/\.md$/i, '')
-              .replace(/^./, c => c.toUpperCase());
-  let f = path.resolve(langdir, l);
-  data[name] = fs.readFileSync(f).toString();
+  let r = /\.md$/i;
+  if(r.test(l)) {
+    let name = l.slice(0, -3).replace(/^./, c => c.toUpperCase());
+    let f = path.resolve(langdir, l);
+    data[name] = fs.readFileSync(f).toString();
+  }
 });
 
 let lines = readlines(index);
@@ -23,8 +25,8 @@ let fd = fs.openSync(index_tmp, 'w');
 for(let l of lines) {
   fs.writeFileSync(fd, l);
 
-  let regBody = /<body>/;
-  if(regBody.test(l)) {
+  let rBody = /<body>/;
+  if(rBody.test(l)) {
     let script = `
       <script>
         let data = ${JSON.stringify(data)};
