@@ -25,7 +25,17 @@ eval("/**\n * marked - a markdown parser\n * Copyright (c) 2011-2021, Christophe
   \********************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const marked = __webpack_require__(/*! marked */ \"./node_modules/marked/lib/marked.js\");\nconst hljs = __webpack_require__(/*! highlight.js */ \"./node_modules/highlight.js/lib/index.js\");\n// const hljs = require('highlight.js/lib/common');\n\n\nlet root = document.getElementById(\"root\");\nlet html = \"\";\nfor(let v of Object.values(data)) {\n  html += marked(v);\n}\nroot.innerHTML = html;\n\ndocument.addEventListener('DOMContentLoaded', (event) => {\n  document.querySelectorAll('code').forEach((el) => {\n    hljs.highlightElement(el);\n  });\n});\n\n\n\n//# sourceURL=webpack://zkaidev.github.io/./src/app.js?");
+eval("const marked = __webpack_require__(/*! marked */ \"./node_modules/marked/lib/marked.js\");\nconst hljs = __webpack_require__(/*! highlight.js */ \"./node_modules/highlight.js/lib/index.js\");\nconst Lang = __webpack_require__(/*! ./lang.js */ \"./src/lang.js\");\n\n\nlet langs = [];\nfor(let entry of Object.entries(data)) {\n  let lang = new Lang();\n  let key = entry[0];\n  let value = marked(entry[1]);\n  let r = /(?<=<code>)(.|\\n)*?(?=<\\/code>)/ig;\n  value = value.replace(r, (m) => {\n\t  let a = m.replace(/&lt;/g, \"<\").replace(/&gt;/g, \">\").replace(/&amp;/g, \"&\").replace(/&quot;/g, '\"').replace(/&#39;/g, \"'\");\n\t  return hljs.highlightAuto(a).value;\n  });\n  lang.name = key;\n  lang.content = value;\n  langs.push(lang);\n}\n\n\nlet root = document.getElementById(\"root\");\nlet side = document.createElement(\"div\");\nlet content = document.createElement(\"div\");\n\nfor(let l of langs) {\n  l.parent = content;\n}\n\nside.classList.add(\"side\");\nfor(let l of langs) {\n  let cb = document.createElement(\"input\");\n  cb.setAttribute('type', 'checkbox');\n  cb.setAttribute('id', l.name);\n  let lb = document.createElement(\"label\");\n  lb.setAttribute('for', l.name);\n  let tn = document.createTextNode(l.name);\n  lb.appendChild(tn);\n  side.appendChild(cb);\n  side.appendChild(lb);\n\n  cb.addEventListener('click', (e) => {\n\t\tif(e.target.checked) {\n\t\t  get_lang(e.target.id).show();\n\t\t} else {\n\t\t  get_lang(e.target.id).hide();\n\t\t}\n\t});\n}\nroot.appendChild(side);\nside.children[0].click();\n\n\ncontent.classList.add(\"content\");\nroot.appendChild(content);\n\n\n/*\n * helper functions\n */\nfunction get_lang(name) {\n  for(let l of langs) {\n\t\tif(l.name === name) {\n\t\t  return l;\n\t\t}\n\t}\n}\n\n\n//# sourceURL=webpack://zkaidev.github.io/./src/app.js?");
+
+/***/ }),
+
+/***/ "./src/lang.js":
+/*!*********************!*\
+  !*** ./src/lang.js ***!
+  \*********************/
+/***/ ((module) => {
+
+eval("class Lang {\n  constructor() {\n    this.name = \"\";\n\t\tthis.content = \"\";\n\t\tthis.parent = null;\n\t\tthis.element = null;\n\t}\n\n  show() {\n\t\tif(this.parent === null) {\n\t\t  return ;\n\t\t}\n\n\t\tif(this.element !== null) {\n\t\t  this.parent.appendChild(this.element);\n\t\t} else {\n\t\t  let el = document.createElement(\"div\");\n\t\t  el.innerHTML = this.content;\n\t\t  this.element = el;\n\t\t  this.parent.appendChild(this.element);\n\t\t}\n\t}\n  \n  hide() {\n\t\tif(this.element !== null && this.parent !== null) {\n\t\t  this.parent.removeChild(this.element);\n\t\t}\n\t}\n}\n\n\nmodule.exports = Lang;\n\n\n//# sourceURL=webpack://zkaidev.github.io/./src/lang.js?");
 
 /***/ }),
 
