@@ -1,34 +1,71 @@
-* {
-		margin: 0;
-		padding: 0;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	@apply overflow-x-hidden;
 }
 
-ol, ul {
-		padding-left: 1em;
-}
-
-html, body {
-		height: 100%;
-}
-
-.root {
-		height: 100%;
+#root {
+	@apply w-screen min-h-screen mx-auto flex flex-row;
 }
 
 .side {
-		padding: 1em;
+	@apply mr-1 w-40 min-h-full flex-none bg-violet-800 text-white;
+}
+
+.side > div {
+	@apply px-2 py-1;
+}
+
+.side > div > input {
+	@apply mr-2;
+}
+
+.side > div > label {
+	@apply hover:text-violet-500;
 }
 
 .content {
-		display: flex;
-		flex-direction: row;
+	@apply flex flex-row flex-nowrap grow overflow-x-hidden gap-x-1;
 }
 
 .content > div {
-		flex: 1 1;
-		background: rgb(243 244 246);
-		margin: 1px;
-		padding: .5em;
-		overflow: hidden;
-		min-height: 100%;
+	@apply flex-1 overflow-x-auto bg-stone-50 p-2;
+}
+
+h1 {
+	@apply text-3xl font-bold;
+}
+
+h2 {
+	@apply text-2xl font-bold;
+}
+
+h3 {
+	@apply text-xl font-bold;
+}
+
+h4 {
+	@apply text-lg font-bold;
+}
+
+h5 {
+	@apply text-base font-bold;
+}
+
+h6 {
+	@apply text-sm font-bold;
+}
+
+h1, h2, h3, h4, h5, h6, ol, ul, code, p {
+	@apply my-4;
+}
+
+ol {
+	@apply list-decimal pl-5;
+}
+
+ul {
+	@apply list-disc pl-5;
 }
