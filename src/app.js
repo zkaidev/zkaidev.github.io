@@ -3,12 +3,12 @@ const hljs = require('highlight.js');
 const Lang = require('./lang.js');
 
 let root = document.getElementById("root");
-let side = document.getElementById("side");
+let langs = document.getElementById("langs");
 let content = document.getElementById("content");
 
 
-// create langs data
-let langs = [];
+// create langs elements
+let lang_objs = [];
 for(let entry of Object.entries(data)) {
   let lang = new Lang();
   let key = entry[0];
@@ -20,17 +20,15 @@ for(let entry of Object.entries(data)) {
   });
   lang.name = key;
   lang.content = value;
-  langs.push(lang);
+  lang_objs.push(lang);
 }
 
-for(let l of langs) {
+for(let l of lang_objs) {
   l.parent = content;
 }
 
 
-// create sidebar, lang list item
-side.classList.add("side");
-for(let l of langs) {
+for(let l of lang_objs) {
   let div = document.createElement("div");
   let cb = document.createElement("input");
   cb.setAttribute('type', 'checkbox');
@@ -41,7 +39,7 @@ for(let l of langs) {
   lb.appendChild(tn);
   div.appendChild(cb);
   div.appendChild(lb);
-  side.appendChild(div);
+  langs.appendChild(div);
 
   cb.addEventListener('click', (e) => {
 		if(e.target.checked) {
@@ -51,21 +49,23 @@ for(let l of langs) {
 		}
 	});
 }
-root.appendChild(side);
 
-side.children[0].children[0].click();
-side.children[1].children[0].click();
+langs.children[0].children[0].click();
+langs.children[1].children[0].click();
+langs.children[2].children[0].click();
+langs.children[3].children[0].click();
+langs.children[4].children[0].click();
 
-// create content div
+// add class name
+langs.classList.add("langs");
 content.classList.add("content");
-root.appendChild(content);
 
 
 /*
  * helper functions
  */
 function get_lang(name) {
-  for(let l of langs) {
+  for(let l of lang_objs) {
 		if(l.name === name) {
 		  return l;
 		}

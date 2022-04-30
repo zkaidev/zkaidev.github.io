@@ -1,37 +1,57 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
-
-body {
-	@apply overflow-x-hidden;
-}
 
 #root {
-	@apply w-screen min-h-screen mx-auto flex flex-row;
+	@apply flex;
 }
 
-.side {
-	@apply mr-1 w-40 min-h-full flex-none bg-violet-800 text-white;
+#side {
+	@apply w-40 flex-none;
+	@apply text-white bg-gray-800 min-h-screen;
+	position: relative;
 }
 
-.side > div {
-	@apply px-2 py-1;
+#side #logo {
+	@apply w-20 mt-4 mb-2 border-indigo-500 mx-auto;
 }
 
-.side > div > input {
-	@apply mr-2;
+#side #logo span {
+	@apply text-amber-400 font-bold text-3xl italic;
 }
 
-.side > div > label {
-	@apply hover:text-violet-500;
+#side .slogan {
+	@apply px-4 pb-6 text-amber-400 italic;
 }
 
-.content {
-	@apply flex flex-row flex-nowrap grow overflow-x-hidden gap-x-1;
+#side .langs {
+	@apply my-2 px-4;
 }
 
-.content > div {
-	@apply flex-1 overflow-x-auto bg-stone-50 p-2;
+#side .langs input {
+	@apply mr-2 checked:bg-amber-300 default:bg-pink-400;
+}
+
+#side .langs label {
+	@apply hover:text-amber-300;
+}
+
+#info {
+	@apply text-center text-gray-500 text-sm mt-10 italic;
+}
+
+#content {
+	@apply min-w-0 flex flex-1;
+	@apply gap-x-px bg-gray-300;
+}
+
+#content > div {
+	@apply flex-1 overflow-x-auto;
+	@apply bg-slate-50 p-2;
+}
+
+
+pre {
+	@apply overflow-x-auto;
 }
 
 h1 {
@@ -63,9 +83,9 @@ h1, h2, h3, h4, h5, h6, ol, ul, code, p {
 }
 
 ol {
-	@apply list-decimal pl-5;
+	@apply list-decimal ml-5;
 }
 
 ul {
-	@apply list-disc pl-5;
+	@apply list-disc ml-5;
 }

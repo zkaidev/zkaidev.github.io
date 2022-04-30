@@ -1,8 +1,7 @@
 # Ruby
-**this is my favority language**
 
-```
-def plus(a, b)
-  puts a + b
-end
-```
+### 数据类型
+
+1. 基本类型  
+数字, 字符串, 数组, 散列表, 区间, 符号, 正则表达式  
+Numeric, Integer, String, Range, Array, Hash, Symbol, Regexp

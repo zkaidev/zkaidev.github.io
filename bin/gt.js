@@ -41,7 +41,7 @@ fs.closeSync(fd);
 fs.copyFileSync(index_tmp, path.resolve(basedir, 'dist', 'index.html'));
 fs.unlinkSync(index_tmp);
 
-fs.copyFileSync(path.resolve(basedir, 'src', 'style.css'), path.resolve(basedir, 'dist', 'style.css'));
+// fs.copyFileSync(path.resolve(basedir, 'src', 'style.css'), path.resolve(basedir, 'dist', 'style.css'));
 
 
 /*
