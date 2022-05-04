@@ -1,6 +1,13 @@
 @tailwind base;
 @tailwind components;
 
+
+@media (max-width: 768px) {
+	:root {
+		font-size: 32px;
+	}
+}
+
 #root {
 	@apply flex;
 }

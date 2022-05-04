@@ -468,6 +468,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-backdrop-sepia:  ;
 }
 
+@media (max-width: 768px) {
+  :root {
+    font-size: 32px;
+  }
+}
+
 #root {
   display: flex;
 }
