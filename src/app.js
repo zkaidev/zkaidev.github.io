@@ -5,6 +5,7 @@ const Lang = require('./lang.js');
 let root = document.getElementById("root");
 let langs = document.getElementById("langs");
 let content = document.getElementById("content");
+let search = document.getElementById("search");
 
 
 // create langs elements
@@ -59,6 +60,26 @@ langs.children[4].children[0].click();
 // add class name
 langs.classList.add("langs");
 content.classList.add("content");
+
+// add search event listener
+search.addEventListener('keydown', (e) => {
+  if(e.keyCode !== 13) { return; }
+  let value = e.target.value;
+
+  for(let l of lang_objs) {
+    let elements = l.element.querySelectorAll("h1,h2,h3,h4,h5,h6,li");
+    let eles = [];
+    for(let e of elements) {
+      if(e.innerText.indexOf(value) != -1) {
+        eles.push(e);
+      }
+    }
+    if(eles.length > 0 ) {
+      l.element.scrollTo({left: 0, top: eles[0].offsetTop, behavior: 'smooth'});
+    }
+  }
+
+});
 
 
 /*

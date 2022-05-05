@@ -1,25 +1,30 @@
 @tailwind base;
 @tailwind components;
 
-
-@media (max-width: 768px) {
-	:root {
-		font-size: 32px;
-	}
+html, body {
+	@apply h-full;
 }
 
 #root {
 	@apply flex;
+	@apply overflow-y-hidden h-full;
 }
 
 #side {
-	@apply w-40 flex-none;
-	@apply text-white bg-gray-800 min-h-screen;
-	position: relative;
+	@apply w-40 flex flex-col flex-none;
+	@apply bg-gray-800 min-h-screen;
 }
 
 #side #logo {
 	@apply w-20 mt-4 mb-2 border-indigo-500 mx-auto;
+}
+
+#side #search_wrapper {
+	@apply mx-4 pb-8;
+}
+
+#side #search {
+	@apply w-full h-8;
 }
 
 #side #logo span {
@@ -31,7 +36,7 @@
 }
 
 #side .langs {
-	@apply my-2 px-4;
+	@apply my-2 px-4 flex-1;
 }
 
 #side .langs input {
@@ -39,21 +44,21 @@
 }
 
 #side .langs label {
-	@apply hover:text-amber-300;
+	@apply text-white hover:text-amber-300;
 }
 
-#info {
-	@apply text-center text-gray-500 text-sm mt-10 italic;
+#side #info {
+	@apply text-center text-gray-500 text-sm mt-10 p-2 italic;
 }
 
 #content {
 	@apply min-w-0 flex flex-1;
-	@apply gap-x-px bg-gray-300;
+	@apply gap-x-px bg-gray-300 overflow-y-scroll;
 }
 
 #content > div {
-	@apply flex-1 overflow-x-auto;
-	@apply bg-slate-50 p-2;
+	@apply flex-1;
+	@apply bg-slate-50 p-2 h-full overflow-x-auto;
 }
 
 
